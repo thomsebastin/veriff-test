@@ -1,0 +1,14 @@
+@import "./variables.scss";
+
+.App {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 15px;
+  background: $color-white;
+  box-shadow: rgba(0, 2, 44, 0.15) 0px 50px 40px 0px;
+}
+
+.checks {
+  margin: 0;
+  padding: 0;
+}

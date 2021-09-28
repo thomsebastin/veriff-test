@@ -1,0 +1,49 @@
+@import '../../variables.scss';
+
+.toggle-switch {
+    display: flex;
+    overflow: hidden;
+    margin: 5px 0;
+  
+    input {
+      position: absolute;
+      clip: rect(0, 0, 0, 0);
+      height: 1px;
+      width: 1px;
+      border: 0;
+      overflow: hidden;
+    }
+  
+    label {
+      background-color: $color-white;
+      color: $color-teal;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1;
+      text-align: center;
+      padding: 10px 24px;
+      margin-right: -1px;
+      border: 2px solid $color-teal;
+      transition: all 0.1s ease-in-out;
+  
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  
+    input:checked + label {
+      background-color: $color-teal;
+      color: $color-white;
+      box-shadow: none;
+    }
+  
+    label {
+      &:first-of-type {
+        border-radius: 4px 0 0 4px;
+      }
+  
+      &:last-of-type {
+        border-radius: 0 4px 4px 0;
+      }
+    }
+  }

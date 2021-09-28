@@ -1,0 +1,9 @@
+@import "../../variables.scss";
+
+.check-error {
+  background-color: $color-error-background;
+  padding: 8px 16px;
+  &__description {
+    color: $color-error-text;
+  }
+}

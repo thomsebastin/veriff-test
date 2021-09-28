@@ -1,0 +1,34 @@
+@import "../../variables.scss";
+
+.btn-submit {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 40px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  text-align: center;
+  user-select: none;
+  border: 1px solid transparent;
+  background-color: $color-teal;
+  color: $color-white;
+  position: relative;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  margin-left: auto;
+  margin-top: 40px;
+
+  &:disabled {
+    background-color: $color-disabled;
+    color: $color-btn;
+    cursor: not-allowed;
+  }
+
+  &:enabled {
+    &:hover, &:focus {
+      filter: brightness(110%);
+    }
+  }
+}

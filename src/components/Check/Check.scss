@@ -1,0 +1,19 @@
+@import "../../variables.scss";
+
+.check {
+  list-style: none;
+  padding: 10px 20px;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.2;
+  }
+
+  &:hover {
+    background-color: $color-purple-light;
+  }
+
+  &:focus {
+    background-color: $color-light-teal;
+  }
+}
