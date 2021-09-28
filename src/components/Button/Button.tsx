@@ -1,20 +1,17 @@
-// import React from "react";
-// import PropTypes from "prop-types";
 import "./Button.scss";
 
-const Button = ({ children, ...rest }: { children: any }) => {
+function Button({
+  children,
+  isSubmitEnabled,
+}: {
+  children: any;
+  isSubmitEnabled: any;
+}) {
   return (
-    <button className="btn-submit" {...rest}>
+    <button className="btn-submit" disabled={!isSubmitEnabled()}>
       {children}
     </button>
   );
-};
-
-// Button.propTypes = {
-//   children: PropTypes.string.isRequired,
-//   disabled: PropTypes.bool,
-//   type: PropTypes.string,
-//   onClick: PropTypes.func
-// };
+}
 
 export default Button;

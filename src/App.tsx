@@ -87,6 +87,22 @@ function App() {
     setItems(newItems);
   };
 
+  const isAllChecked = () => {
+    return items.every((item: any) => {
+      return item.checked === true;
+    })
+  }
+  
+  const isOneUnchecked = () => {
+    return items.some((item: any) => {
+      return item.checked === false;
+    })
+  }
+
+  const isSubmitEnabled = () => {
+    return isAllChecked() || isOneUnchecked();
+  }
+
   useEffect(() => {
     fetchChecks()
       .then((res: any) => {
@@ -120,7 +136,7 @@ function App() {
               );
             })}
           </ul>
-          <Button>Submit</Button>
+          <Button isSubmitEnabled={isSubmitEnabled}>Submit</Button>
         </>
       ) : null}
     </div>

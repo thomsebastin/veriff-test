@@ -14,7 +14,6 @@ function Check({
 }) {
   return (
     <li className={`check ${!item.enabled && index !== 0 ? "disabled" : ""}`}>
-      {console.log('rendering check again....')}
       <Description description={item.description} />
       <ToggleSwitch
         id={item.id}
