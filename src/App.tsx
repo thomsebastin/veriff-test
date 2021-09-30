@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Check from "./components/Check/Check";
 import Button from "./components/Button/Button";
 import Error from "./components/Error/Error";
@@ -8,9 +8,10 @@ import { fetchChecks } from "./api";
 import "./App.scss";
 
 function App() {
-  const [items, setItems]: [any, any] = useState(null);
+  const [items, setItems]: [any, any] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [cursor, setCursor] = useState(0);
 
   const updateResponse = (items: any): any => {
     return items
@@ -83,25 +84,24 @@ function App() {
         return item;
       });
     }
-
     setItems(newItems);
   };
 
   const isAllChecked = () => {
     return items.every((item: any) => {
       return item.checked === true;
-    })
-  }
-  
+    });
+  };
+
   const isOneUnchecked = () => {
     return items.some((item: any) => {
       return item.checked === false;
-    })
-  }
+    });
+  };
 
   const isSubmitEnabled = () => {
     return isAllChecked() || isOneUnchecked();
-  }
+  };
 
   useEffect(() => {
     fetchChecks()
@@ -118,19 +118,75 @@ function App() {
       });
   }, []);
 
+  const handleKeyDown = (e: any) => {
+    if (
+      e.key === "ArrowUp" &&
+      cursor > 0 &&
+      items[cursor - 1].enabled === true
+    ) {
+      setCursor((prevCursor) => prevCursor - 1);
+    } else if (
+      e.key === "ArrowDown" &&
+      cursor < items.length - 1 &&
+      items[cursor + 1].enabled === true
+    ) {
+      setCursor((prevCursor) => prevCursor + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (ulRef.current) {
+      (
+        ulRef.current.children[cursor].querySelector(
+          `.toggle-switch input[name=switch-${items[cursor].id}]`
+        ) as HTMLElement
+      ).focus();
+    }
+  }, [cursor, items]);
+
+  const handleRadioPress = (e: any, yesRef: any, noRef: any, id: any) => {
+    if (
+      e.key === "ArrowDown" ||
+      e.key === "ArrowUp" ||
+      e.key === "ArrowLeft" ||
+      e.key === "ArrowRight"
+    ) {
+      e.preventDefault();
+    }
+
+    if (e.key === "1") {
+      yesRef.current.checked = true;
+      noRef.current.checked = false;
+      handleToggleCheck(id, "yes");
+    } else if (e.key === "2") {
+      yesRef.current.checked = false;
+      noRef.current.checked = true;
+      handleToggleCheck(id, "no");
+    }
+  };
+
+  const ulRef = useRef<HTMLUListElement>(null);
+
   return (
     <div className="App">
       {error ? (
         <Error>There was an Error</Error>
       ) : !loading ? (
         <>
-          <ul className="checks">
+          <ul
+            onKeyDown={(e) => handleKeyDown(e)}
+            tabIndex={0}
+            className="checks"
+            ref={ulRef}
+          >
             {items.map((item: any, index: number) => {
               return (
                 <Check
                   key={item.id}
                   item={item}
                   index={index}
+                  cursor={cursor}
+                  handleRadioPress={handleRadioPress}
                   handleToggleCheck={handleToggleCheck}
                 />
               );

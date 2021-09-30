@@ -11,4 +11,11 @@
 .checks {
   margin: 0;
   padding: 0;
+
+  /* Bad Practice - but disabling outline 
+  just to keep the demo pretty.*/
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
 }

@@ -4,6 +4,10 @@
   list-style: none;
   padding: 10px 20px;
 
+  &.active {
+    background-color: $color-teal-bg;
+  }
+
   &.disabled {
     pointer-events: none;
     opacity: 0.2;
@@ -14,6 +18,6 @@
   }
 
   &:focus {
-    background-color: $color-light-teal;
+    background-color: $color-teal-light;
   }
 }
