@@ -1,4 +1,6 @@
 import { useRef } from "react";
+import Checked from "../../constants/constants";
+
 import "./ToggleSwitch.scss";
 
 function ToggleSwitch({
@@ -12,7 +14,6 @@ function ToggleSwitch({
 }) {
   const inputYesRef = useRef<HTMLInputElement>(null);
   const inputNoRef = useRef<HTMLInputElement>(null);
-  // const toggleSwitchRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="toggle-switch">
@@ -20,22 +21,22 @@ function ToggleSwitch({
         type="radio"
         id={`radio-yes-${id}`}
         name={`switch-${id}`}
-        value="yes"
+        value={Checked.Yes}
         ref={inputYesRef}
         onKeyDown={(e) => handleRadioPress(e, inputYesRef, inputNoRef, id)}
-        onChange={() => handleToggleCheck(id, "yes")}
+        onChange={() => handleToggleCheck(id, Checked.Yes)}
       />
-      <label htmlFor={`radio-yes-${id}`}>Yes</label>
+      <label htmlFor={`radio-yes-${id}`}>{Checked.Yes}</label>
       <input
         type="radio"
         id={`radio-no-${id}`}
         name={`switch-${id}`}
-        value="no"
+        value={Checked.No}
         ref={inputNoRef}
         onKeyDown={(e) => handleRadioPress(e, inputYesRef, inputNoRef, id)}
-        onChange={() => handleToggleCheck(id, "no")}
+        onChange={() => handleToggleCheck(id, Checked.No)}
       />
-      <label htmlFor={`radio-no-${id}`}>No</label>
+      <label htmlFor={`radio-no-${id}`}>{Checked.No}</label>
     </div>
   );
 }

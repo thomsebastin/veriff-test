@@ -8,7 +8,7 @@ function Button({
   isSubmitEnabled: any;
 }) {
   return (
-    <button className="btn-submit" disabled={!isSubmitEnabled()}>
+    <button type="submit" className="btn-submit" disabled={!isSubmitEnabled()}>
       {children}
     </button>
   );

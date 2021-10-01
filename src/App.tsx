@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+
 import Check from "./components/Check/Check";
 import Button from "./components/Button/Button";
 import Error from "./components/Error/Error";
+import Success from "./components/Success/Success";
 
-import { fetchChecks } from "./api";
+import Checked from "./constants/constants";
+
+import { fetchChecks, submitCheckResults } from "./api";
 
 import "./App.scss";
 
@@ -12,6 +16,9 @@ function App() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [cursor, setCursor] = useState(0);
+
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [hideForm, setHideForm] = useState(false);
 
   const updateResponse = (items: any): any => {
     return items
@@ -40,7 +47,7 @@ function App() {
       if (item.id === id) {
         return {
           ...item,
-          checked: value === "yes",
+          checked: value === Checked.Yes,
         };
       }
 
@@ -48,7 +55,7 @@ function App() {
     });
 
     // logic for when the value is no
-    if (value === "no") {
+    if (value === Checked.No) {
       newItems = newItems.map((item: any, index: number) => {
         if (index > selectedIndex) {
           return {
@@ -61,7 +68,7 @@ function App() {
       });
     }
 
-    if (value === "yes") {
+    if (value === Checked.Yes) {
       if (selectedIndex < newItems.length - 1)
         newItems[selectedIndex + 1].enabled = true;
 
@@ -84,7 +91,14 @@ function App() {
         return item;
       });
     }
+
+    // update the state to reflect new changes
     setItems(newItems);
+
+    /**
+     * update cursor value to current selected index to
+     * be in sync with keyboard navigation*/
+    setCursor(selectedIndex);
   };
 
   const isAllChecked = () => {
@@ -157,44 +171,69 @@ function App() {
     if (e.key === "1") {
       yesRef.current.checked = true;
       noRef.current.checked = false;
-      handleToggleCheck(id, "yes");
+      handleToggleCheck(id, Checked.Yes);
     } else if (e.key === "2") {
       yesRef.current.checked = false;
       noRef.current.checked = true;
-      handleToggleCheck(id, "no");
+      handleToggleCheck(id, Checked.No);
     }
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log("submitting...");
+    submitCheckResults(items)
+      .then((res: any) => {
+        setSubmitSuccess(true);
+        console.log(res);
+      })
+      .catch((error) => {
+        setSubmitSuccess(false);
+        console.log("there was an error", error);
+      })
+      .finally(() => {
+        setHideForm(true);
+      });
   };
 
   const ulRef = useRef<HTMLUListElement>(null);
 
   return (
     <div className="App">
-      {error ? (
-        <Error>There was an Error</Error>
-      ) : !loading ? (
+      {!hideForm ? (
         <>
-          <ul
-            onKeyDown={(e) => handleKeyDown(e)}
-            tabIndex={0}
-            className="checks"
-            ref={ulRef}
-          >
-            {items.map((item: any, index: number) => {
-              return (
-                <Check
-                  key={item.id}
-                  item={item}
-                  index={index}
-                  cursor={cursor}
-                  handleRadioPress={handleRadioPress}
-                  handleToggleCheck={handleToggleCheck}
-                />
-              );
-            })}
-          </ul>
-          <Button isSubmitEnabled={isSubmitEnabled}>Submit</Button>
+          {error ? (
+            <Error>There was an Error</Error>
+          ) : !loading ? (
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <ul
+                onKeyDown={(e) => handleKeyDown(e)}
+                tabIndex={0}
+                className="checks"
+                ref={ulRef}
+              >
+                {items.map((item: any, index: number) => {
+                  return (
+                    <Check
+                      key={item.id}
+                      item={item}
+                      index={index}
+                      cursor={cursor}
+                      handleRadioPress={handleRadioPress}
+                      handleToggleCheck={handleToggleCheck}
+                    />
+                  );
+                })}
+              </ul>
+              <Button isSubmitEnabled={isSubmitEnabled}>Submit</Button>
+            </form>
+          ) : null}
         </>
-      ) : null}
+      ) : submitSuccess ? (
+        <Success>The form was successfully submitted!!</Success>
+      ) : (
+        <Error>Couldn't submit the form. Please try again!!</Error>
+      )}
     </div>
   );
 }
