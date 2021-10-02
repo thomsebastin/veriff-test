@@ -1,5 +1,9 @@
 import { useRef } from "react";
-import Checked from "../../constants/constants";
+import { Checked } from "../../constants/constants";
+import {
+  handleRadioPressType,
+  handleToggleCheckType,
+} from "../../interfaces/interface";
 
 import "./ToggleSwitch.scss";
 
@@ -9,8 +13,8 @@ function ToggleSwitch({
   handleToggleCheck,
 }: {
   id: string;
-  handleRadioPress: any;
-  handleToggleCheck: any;
+  handleRadioPress: handleRadioPressType;
+  handleToggleCheck: handleToggleCheckType;
 }) {
   const inputYesRef = useRef<HTMLInputElement>(null);
   const inputNoRef = useRef<HTMLInputElement>(null);

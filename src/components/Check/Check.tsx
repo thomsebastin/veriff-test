@@ -1,3 +1,8 @@
+import {
+  InputKeyBoardEventType,
+  InputRefType,
+  ItemNew,
+} from "../../interfaces/interface";
 import Description from "../Description/Description";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 
@@ -10,11 +15,16 @@ function Check({
   handleRadioPress,
   handleToggleCheck,
 }: {
-  item: any;
+  item: ItemNew;
   index: number;
   cursor: number;
-  handleRadioPress: any;
-  handleToggleCheck: any;
+  handleRadioPress: (
+    e: InputKeyBoardEventType,
+    inputYesRef: InputRefType,
+    inputNoRed: InputRefType,
+    id: string
+  ) => void;
+  handleToggleCheck: (id: string, value: string) => void;
 }) {
   return (
     <li

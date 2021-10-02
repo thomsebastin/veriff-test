@@ -1,4 +1,6 @@
-export function fetchChecks() {
+import { Item, ItemNew } from "./interfaces/interface";
+
+export function fetchChecks() : Promise<Item[]> {
   return new Promise((resolve, reject) =>
     setTimeout(
       () =>
@@ -36,7 +38,7 @@ export function fetchChecks() {
  * @param {string} results[].checkId - Check id
  * @param {string} results[].result - Result value (yes / no)
  */
-export function submitCheckResults(results: any) {
+export function submitCheckResults(results: ItemNew[]): Promise<ItemNew[]> {
   return new Promise((resolve, reject) =>
     setTimeout(
       () =>

@@ -1,11 +1,8 @@
+import { ReactElement } from "react";
 import "./Description.scss";
 
-function Description({ description }: { description: string }) {
-  return (
-    <p className="description">
-      {description}
-    </p>
-  );
+function Description({ description }: { description: string }): ReactElement {
+  return <p className="description">{description}</p>;
 }
 
 export default Description;

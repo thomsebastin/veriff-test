@@ -5,22 +5,31 @@ import Button from "./components/Button/Button";
 import Error from "./components/Error/Error";
 import Success from "./components/Success/Success";
 
-import Checked from "./constants/constants";
+import { Checked, Pressed } from "./constants/constants";
+
+import {
+  InputKeyBoardEventType,
+  InputRefType,
+  Item,
+  ItemNew,
+  UListRefType,
+} from "./interfaces/interface";
 
 import { fetchChecks, submitCheckResults } from "./api";
 
 import "./App.scss";
+import { isSubmitEnabled, getIndex } from "./utils/utils";
 
 function App() {
-  const [items, setItems]: [any, any] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [cursor, setCursor] = useState(0);
+  const [items, setItems] = useState<ItemNew[] | []>([]);
+  const [error, setError] = useState<null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [cursor, setCursor] = useState<number>(0);
 
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [hideForm, setHideForm] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
+  const [hideForm, setHideForm] = useState<boolean>(false);
 
-  const updateResponse = (items: any): any => {
+  const updateResponse = (items: Item[]): ItemNew[] => {
     return items
       .sort((a: any, b: any) => a.priority - b.priority)
       .map((item: any, index: number) => {
@@ -32,18 +41,12 @@ function App() {
       });
   };
 
-  const getIndex = (items: any, id: any): any => {
-    return items.findIndex((item: any) => {
-      return item.id === id;
-    });
-  };
-
-  const handleToggleCheck = (id: any, value: string) => {
-    let newItems: any = [...items];
+  const handleToggleCheck = (id: string, value: string) => {
+    let newItems: ItemNew[] = [...items];
     const selectedIndex = getIndex(newItems, id);
 
     // modify checked state
-    newItems = newItems.map((item: any) => {
+    newItems = newItems.map((item: ItemNew) => {
       if (item.id === id) {
         return {
           ...item,
@@ -56,7 +59,7 @@ function App() {
 
     // logic for when the value is no
     if (value === Checked.No) {
-      newItems = newItems.map((item: any, index: number) => {
+      newItems = newItems.map((item: ItemNew, index: number) => {
         if (index > selectedIndex) {
           return {
             ...item,
@@ -77,19 +80,21 @@ function App() {
        * based on whether the previous one is checked or not.
        * Skips the selected item though.
        */
-      newItems = newItems.map((item: any, index: number, arr: any) => {
-        if (index > selectedIndex) {
-          if (
-            arr[index - 1].checked === true &&
-            arr[index - 1].enabled === true
-          ) {
-            // previous one is checked
-            arr[index].enabled = true;
+      newItems = newItems.map(
+        (item: ItemNew, index: number, arr: ItemNew[]) => {
+          if (index > selectedIndex) {
+            if (
+              arr[index - 1].checked === true &&
+              arr[index - 1].enabled === true
+            ) {
+              // previous one is checked
+              arr[index].enabled = true;
+            }
           }
-        }
 
-        return item;
-      });
+          return item;
+        }
+      );
     }
 
     // update the state to reflect new changes
@@ -101,25 +106,9 @@ function App() {
     setCursor(selectedIndex);
   };
 
-  const isAllChecked = () => {
-    return items.every((item: any) => {
-      return item.checked === true;
-    });
-  };
-
-  const isOneUnchecked = () => {
-    return items.some((item: any) => {
-      return item.checked === false;
-    });
-  };
-
-  const isSubmitEnabled = () => {
-    return isAllChecked() || isOneUnchecked();
-  };
-
   useEffect(() => {
     fetchChecks()
-      .then((res: any) => {
+      .then((res: Item[]) => {
         const result = [...res];
         setItems(updateResponse(result));
       })
@@ -132,7 +121,7 @@ function App() {
       });
   }, []);
 
-  const handleKeyDown = (e: any) => {
+  const handleKeyDown = (e: UListRefType) => {
     if (
       e.key === "ArrowUp" &&
       cursor > 0 &&
@@ -158,34 +147,44 @@ function App() {
     }
   }, [cursor, items]);
 
-  const handleRadioPress = (e: any, yesRef: any, noRef: any, id: any) => {
+  const handleRadioPress = (
+    e: InputKeyBoardEventType,
+    yesRef: InputRefType | null,
+    noRef: InputRefType | null,
+    id: string
+  ) => {
     if (
-      e.key === "ArrowDown" ||
-      e.key === "ArrowUp" ||
-      e.key === "ArrowLeft" ||
-      e.key === "ArrowRight"
+      e.key === Pressed.ArrowDown ||
+      e.key === Pressed.ArrowUp ||
+      e.key === Pressed.ArrowLeft ||
+      e.key === Pressed.ArrowRight
     ) {
       e.preventDefault();
     }
 
-    if (e.key === "1") {
-      yesRef.current.checked = true;
-      noRef.current.checked = false;
+    if (e.key === Pressed.One) {
+      if (yesRef?.current && noRef?.current) {
+        yesRef.current.checked = true;
+        noRef.current.checked = false;
+      }
       handleToggleCheck(id, Checked.Yes);
-    } else if (e.key === "2") {
-      yesRef.current.checked = false;
-      noRef.current.checked = true;
+    } else if (e.key === Pressed.Two) {
+      if (yesRef?.current && noRef?.current) {
+        yesRef.current.checked = false;
+        noRef.current.checked = true;
+      }
       handleToggleCheck(id, Checked.No);
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("submitting...");
     submitCheckResults(items)
-      .then((res: any) => {
+      .then((_res: ItemNew[]) => {
         setSubmitSuccess(true);
-        console.log(res);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       })
       .catch((error) => {
         setSubmitSuccess(false);
@@ -197,6 +196,9 @@ function App() {
   };
 
   const ulRef = useRef<HTMLUListElement>(null);
+
+  const ShowSubmitSuccess = <Success>The form was successfully submitted!! Redirecting...</Success>;
+  const ShowSubmitError = <Error>Couldn't submit the form. Please try again!!</Error>;
 
   return (
     <div className="App">
@@ -225,14 +227,16 @@ function App() {
                   );
                 })}
               </ul>
-              <Button isSubmitEnabled={isSubmitEnabled}>Submit</Button>
+              <Button isSubmitEnabled={() => isSubmitEnabled(items)}>
+                Submit
+              </Button>
             </form>
           ) : null}
         </>
       ) : submitSuccess ? (
-        <Success>The form was successfully submitted!!</Success>
+        ShowSubmitSuccess
       ) : (
-        <Error>Couldn't submit the form. Please try again!!</Error>
+        ShowSubmitError
       )}
     </div>
   );

@@ -1,11 +1,12 @@
+import { ReactNode } from "react";
 import "./Button.scss";
 
 function Button({
   children,
   isSubmitEnabled,
 }: {
-  children: any;
-  isSubmitEnabled: any;
+  children: ReactNode;
+  isSubmitEnabled: () => boolean;
 }) {
   return (
     <button type="submit" className="btn-submit" disabled={!isSubmitEnabled()}>

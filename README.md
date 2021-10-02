@@ -6,6 +6,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm install`
+
+_note: this is a mandatory step_
+
+Install additional packages that were added by me.
+
 ### `npm start`
 
 Runs the app in the development mode.\
@@ -27,20 +33,32 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `Additional info`
+All the requirements are handled to the best of my knowledge.
 
-### `npm run eject`
+I am not a TypeScript expert, but I have tried learning it and implemented types to the best of my knowledge.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+There are some tests that check if basic requirements are met. A lot more could \
+have been covered if I had more time to spend on it.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### `Features:`
+- [x]  Input radio toggle check/uncheck functionality.
+- [x]  List should be sorted by priority
+- [x]  Initially enable only the first one
+- [x]  Show `error` component with custm styling on error. 
+- [x]  Logic for disabling/enabling other toggles based on previous ones.
+- [x]  Test coverage for some basic requirements.
+- [x]  Typescript with all types added and no `any`.
+- [x]  A `success` component displayed on successfull form submit.
+- [x]  Next checks should be disabled unless all checks above are answered.
+- [x]  Submit button becomes available when either:
+    - [x]  All checks are answered as Yes
+    - [x]  At least one check is answered as No
+- [x]  Keyboard functionality.
+- [x]  Keyboard navigation in sync with mouse clicks.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### `Final Thoughts`
+This was a really good assignment and I learned a lot along the way.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Thanks for the opportunity to work on this and looking forward to hear your thoughts\
+on where I could do better and other advice/suggestions in general.
