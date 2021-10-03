@@ -1,11 +1,11 @@
 import { Item, ItemNew } from "../../interfaces/interface";
 
 export const sortResponse = (items: Item[]): Item[] => {
-  return items.sort((a: any, b: any) => a.priority - b.priority);
+  return items.sort((a: Item, b: Item) => a.priority - b.priority);
 };
 
 export const updateResponse = (items: Item[]): ItemNew[] => {
-  return sortResponse(items).map((item: any, index: number) => {
+  return sortResponse(items).map((item: Item, index: number) => {
     return {
       ...item,
       enabled: index === 0,

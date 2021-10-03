@@ -31,8 +31,8 @@ function App() {
 
   const updateResponse = (items: Item[]): ItemNew[] => {
     return items
-      .sort((a: any, b: any) => a.priority - b.priority)
-      .map((item: any, index: number) => {
+      .sort((a: Item, b: Item) => a.priority - b.priority)
+      .map((item: Item, index: number) => {
         return {
           ...item,
           enabled: index === 0,
@@ -214,7 +214,7 @@ function App() {
                 className="checks"
                 ref={ulRef}
               >
-                {items.map((item: any, index: number) => {
+                {items.map((item: ItemNew, index: number) => {
                   return (
                     <Check
                       key={item.id}

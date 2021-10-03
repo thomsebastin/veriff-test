@@ -17,7 +17,7 @@ const isSubmitEnabled = (items: ItemNew[]): boolean => {
 };
 
 const getIndex = (items: ItemNew[], id: string): number => {
-  return items.findIndex((item: any) => {
+  return items.findIndex((item: ItemNew) => {
     return item.id === id;
   });
 };
