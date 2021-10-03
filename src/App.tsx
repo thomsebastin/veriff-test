@@ -123,13 +123,13 @@ function App() {
 
   const handleKeyDown = (e: UListRefType) => {
     if (
-      e.key === "ArrowUp" &&
+      e.key === Pressed.ArrowUp &&
       cursor > 0 &&
       items[cursor - 1].enabled === true
     ) {
       setCursor((prevCursor) => prevCursor - 1);
     } else if (
-      e.key === "ArrowDown" &&
+      e.key === Pressed.ArrowDown &&
       cursor < items.length - 1 &&
       items[cursor + 1].enabled === true
     ) {
